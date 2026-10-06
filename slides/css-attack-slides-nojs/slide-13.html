@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>13 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="d4no" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<div style="display:flex;align-items:baseline;gap:32px">
+<h2 style="font-size:124px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+<p style="font-size:40px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1200px">The bytes you send aren't the bytes they get.</p>
+</div>
+<p style="font-size:33px;line-height:1.45;color:#C2CCD6;max-width:1620px">DNS poisoning, a CDN or subdomain takeover swaps your stylesheet in transit &mdash; and browser extensions and ad-blocker filter lists inject their own CSS on top, on every page the victim loads.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;line-height:1.4;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">Problem: you control what you ship, not what arrives.</p>
+<p style="font-size:34px;font-weight:600;line-height:1.3;color:#6FD3C6;max-width:1620px;padding-top:4px">Evil CSS will reach your page. The only question left is what it can do once it's there.</p>
+<aside>Beat 4 defeat and the pivot. Even frozen, self-hosted CSS isn't safe end to end: it can be swapped in transit (DNS poisoning, CDN/subdomain takeover) or added to by the environment (extensions, ad-blocker filter lists inject CSS on every site). Land the teal line hard &mdash; it closes the delivery ladder and hands off to the next ladder: you can't keep it out, so what happens once it's in? Straight into "render some user HTML, how hard can it be?" ~45 seconds.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-12.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">13 / 37</a>
+<a class="next" href="slide-14.html">Next &rsaquo;</a>
+</div>
+</body></html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>27 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="cspexfil" data-transition="fade" style="background:#1B2029;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:23px;font-weight:500;letter-spacing:1px;color:#6FD3C6">WHEN CSP BLOCKS EVERY REQUEST</p>
+<h2 style="font-size:52px;font-weight:600;line-height:1.08">Reading needs no network. Sending rides a click.</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:18px;align-items:stretch">
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:20px;letter-spacing:0.05em;color:#6FD3C6">1 &middot; READ IT &mdash; zero network</p>
+<p style="font-size:25px;line-height:1.4;color:#C2CCD6">A <b style="color:#E8ECF1;font-weight:600">local</b> font per digit resizes just that digit:</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:19px;line-height:1.5;color:#FF8A7A">@font-face{src:local('Courier New');<br>unicode-range:U+0030;descent-override:200%}</p>
+<p style="font-size:25px;line-height:1.4;color:#C2CCD6">Flip each digit's font on in turn &mdash; the text block grows a fixed step per matching digit. Measure the height in pure CSS (container queries) &rarr; how many of each digit. <b style="color:#E8ECF1;font-weight:600">No font fetched, no script.</b></p>
+</div>
+<x-shape kind="arrow-right" style="background:#6FD3C6;width:46px;height:34px;align-self:center"></x-shape>
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:20px;letter-spacing:0.05em;color:#6FD3C6">2 &middot; SEND IT &mdash; no request</p>
+<p style="font-size:25px;line-height:1.4;color:#C2CCD6">Pre-place one link per possible answer; each <i>href</i> encodes a digit-count.</p>
+<p style="font-size:25px;line-height:1.4;color:#C2CCD6">The oracle makes the <b style="color:#E8ECF1;font-weight:600">matching</b> link fill the screen (<i>inset:0</i>) and shoves the rest off (<i>inset:100%</i>).</p>
+<p style="font-size:25px;line-height:1.4;color:#C2CCD6">The victim clicks anything &rarr; clicks that link &rarr; it <b style="color:#E8ECF1;font-weight:600">navigates out</b> carrying the token.</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 30px">A resource CSP blocks <i>fetches</i>. It blocks neither pure-CSS measurement nor a click-driven navigation.</p>
+<aside>Explainer for the "no request" exfil, because it's the slipperiest beat. Two halves. READ: the attacker never fetches anything &mdash; local fonts (src: local()) resized per digit via descent-override make the text block taller when a given digit is present; CSS container queries read that height back as a number, so CSS alone counts the digits. SEND: there's no fetch either &mdash; every possible answer is pre-laid as a link whose href encodes a digit-count; the oracle result makes exactly the matching link full-screen (inset:0) and the rest offscreen (inset:100%), so any victim click selects it and NAVIGATES to the attacker. The key correction vs the old headline: data DOES leave &mdash; as a navigation on a click &mdash; but no resource is ever fetched, which is what a CSP governs. ~70 seconds; walk both halves slowly.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-26.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">27 / 37</a>
+<a class="next" href="slide-28.html">Next &rsaquo;</a>
+</div>
+</body></html>

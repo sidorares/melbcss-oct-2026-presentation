@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>4 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="chains" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:112px 128px;display:flex;flex-direction:column;gap:40px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#FF5C49">The mindset shift</p>
+<h2 style="font-size:76px;font-weight:600;line-height:1.05;max-width:1600px">Real attacks are chains, not bugs</h2>
+<p style="font-size:34px;line-height:1.4;color:#C2CCD6;max-width:1560px">Every link is something a developer waved away as &ldquo;that never works.&rdquo; Stack enough of them and you get a very bad afternoon.</p>
+<div style="display:flex;flex-direction:column;gap:14px;max-width:1560px">
+<p style="font-size:30px;line-height:1.35;color:#9AA7B4;background:#0C0F14;border:1px solid #2A313C;border-radius:12px;padding:22px 30px">&ldquo;CSS can't make a network request.&rdquo; &mdash; <span style="color:#6FD3C6">background:url() can.</span></p>
+<p style="font-size:30px;line-height:1.35;color:#9AA7B4;background:#0C0F14;border:1px solid #2A313C;border-radius:12px;padding:22px 30px">&ldquo;It can't read data.&rdquo; &mdash; <span style="color:#6FD3C6">attribute selectors can, one character at a time.</span></p>
+<p style="font-size:30px;line-height:1.35;color:#9AA7B4;background:#0C0F14;border:1px solid #2A313C;border-radius:12px;padding:22px 30px">&ldquo;The sanitizer strips that.&rdquo; &mdash; <span style="color:#6FD3C6">it strips a different copy than the browser runs.</span></p>
+<p style="font-size:30px;line-height:1.35;color:#9AA7B4;background:#0C0F14;border:1px solid #2A313C;border-radius:12px;padding:22px 30px">&ldquo;CSP blocks it.&rdquo; &mdash; <span style="color:#6FD3C6">not if the exfil needs no external request.</span></p>
+<p style="font-size:31px;line-height:1.35;color:#E8ECF1;background:#2A1416;border:1px solid #4A2422;border-radius:12px;padding:22px 30px"><b style="color:#FF8A7A;font-weight:600">= your token is on an attacker's server.</b></p>
+</div>
+<aside>This is the slide that inoculates the audience against dismissing the individual tricks you're about to show. The whole talk is one long version of this stack. Each line is a real objection a competent dev would raise, immediately answered. Read a couple aloud, let them feel the pattern, land hard on the red row. The running gag later is literally this chain dramatised as a failed holiday. ~55 seconds.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-03.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">4 / 37</a>
+<a class="next" href="slide-05.html">Next &rsaquo;</a>
+</div>
+</body></html>

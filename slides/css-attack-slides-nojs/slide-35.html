@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>35 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="hardening" data-transition="fade" style="background:#1B2029;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#6FD3C6">What actually helps</p>
+<h2 style="font-size:66px;font-weight:600;line-height:1.05">You don't sanitize your way out. You isolate.</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">ISOLATE IT</h3>
+<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Render untrusted HTML in a <b style="color:#E8ECF1;font-weight:600">sandboxed iframe.</b> No shared trust boundary, nothing to break out of.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">CUT THE REQUESTS</h3>
+<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Route images through a <b style="color:#E8ECF1;font-weight:600">proxy</b>, block <i>data:</i> URLs, and don't allow-list domains an attacker can use.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">ALLOW-LIST CHARACTERS</h3>
+<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Validate names and keywords with a strict character allow-list &mdash; not a blocklist &mdash; to survive CSSOM mutation.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">REVIEW &amp; PATCH</h3>
+<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Read CSS diffs like code. Watch your supply chain &amp; themes. Keep the browser updated &mdash; the engine bugs are real.</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #6FD3C6;padding:4px 0 4px 32px">Blocklists lose to parser differentials. Isolation removes the game entirely.</p>
+<aside>The constructive payoff &mdash; give them something to do Monday. The through-line of every failure in this talk is a blocklist trying to out-guess a browser, which it can't; so the headline is "isolate, don't sanitize." Four concrete moves: (1) sandboxed iframes so untrusted content shares no trust boundary with your UI; (2) image proxy + block data: URLs + no attacker-usable allow-listed domains; (3) when you must validate, allow-list characters not keywords, which defeats the CSSOM mutation trick; (4) treat CSS as code in review, watch dependencies and community themes (callback to MelbCSS), and patch browsers because the engine UAF is not hypothetical. ~55 seconds.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-34.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">35 / 37</a>
+<a class="next" href="slide-36.html">Next &rsaquo;</a>
+</div>
+</body></html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>16 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="uino" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:88px 112px;display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;align-items:baseline;gap:30px">
+<h2 style="font-size:120px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+<p style="font-size:38px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1220px">It controls everything the user sees &mdash; so it can make the page lie.</p>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#C2CCD6;max-width:1660px">No data leaves. The attacker just repaints your trusted UI.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:700;color:#FF5C49">FAKE INPUT FIELDS</h3>
+<p style="font-size:26px;line-height:1.4;color:#C2CCD6"><i>-webkit-text-security</i> turns a plain box into a password field. Forge a login, a payment form, a system prompt.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:700;color:#FF5C49">HIDDEN WARNINGS</h3>
+<p style="font-size:26px;line-height:1.4;color:#C2CCD6"><i>display:none</i> or an overlay buries the real &ldquo;external sender&rdquo; banner, the fraud alert, the &ldquo;are you sure?&rdquo;.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:700;color:#FF5C49">HIJACKED CLICKS</h3>
+<p style="font-size:26px;line-height:1.4;color:#C2CCD6"><i>:before</i>/<i>:after</i> inherit an element's click. &ldquo;Move to spam&rdquo; quietly does something else &mdash; CSS hotwiring.</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:700;color:#FF5C49">SPOOFED UI</h3>
+<p style="font-size:26px;line-height:1.4;color:#C2CCD6">A <i>position:fixed</i> gadget escapes the message box and repaints the whole app. PortSwigger defaced Outlook and spoofed its login &mdash; pure CSS.</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.4;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 30px">No exfiltration. Just a user doing the wrong thing because the page lied to them.</p>
+<aside>Fills the "direct visual manipulation" gap &mdash; the most intuitive CSS attack for this room, and the one with no data theft at all. Four techniques: (1) fake fields via -webkit-text-security and restyling; (2) hiding real security warnings/banners with display:none or an overlay; (3) click hijacking where :before/:after pseudo-elements inherit the target's click handler (PortSwigger's "CSS hotwiring" &mdash; every click performs an action you didn't intend); (4) full UI spoofing/defacement via a position:fixed "CSS gadget" that breaks out of the email message window and repaints the app (PortSwigger defaced Outlook and spoofed its login screen with sanitized CSS). The point to land: the damage here is the user being deceived into acting, not data leaving. ~60 seconds. Then into "fine, strip the scripts."</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-15.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">16 / 37</a>
+<a class="next" href="slide-17.html">Next &rsaquo;</a>
+</div>
+</body></html>

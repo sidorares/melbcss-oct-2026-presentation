@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>9 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="d2no" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;justify-content:center;gap:30px">
+<div style="display:flex;align-items:baseline;gap:32px">
+<h2 style="font-size:132px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+<p style="font-size:40px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1180px">Dependencies of dependencies.</p>
+</div>
+<p style="font-size:33px;line-height:1.45;color:#C2CCD6;max-width:1620px">You can read a direct pull request. You cannot read the transitive tree &mdash; a stylesheet or icon font three levels down in <i>node_modules</i> ships to production without ever crossing your desk.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;line-height:1.4;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">Problem: nobody reviews the whole graph. Nobody can.</p>
+<aside>Beat 2 defeat. Reviewing direct contributions is good practice, but the real surface is transitive: your deps have deps, and CSS/fonts arrive from packages you never chose. This is the classic supply-chain point your audience already feels in their bones. Next: so you'll trust only code you wrote yourself. ~35 seconds.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-08.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">9 / 37</a>
+<a class="next" href="slide-10.html">Next &rsaquo;</a>
+</div>
+</body></html>

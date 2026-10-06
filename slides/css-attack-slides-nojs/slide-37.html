@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>37 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="outro" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:112px 128px;display:flex;flex-direction:column;gap:34px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<h2 style="font-size:84px;font-weight:700;line-height:1.02">Thanks &mdash; now go read a CSS diff.</h2>
+<p style="font-size:34px;line-height:1.4;color:#9AA7B4;max-width:1560px">CSS is untrusted input. Every new feature is new attack surface. The capability always ships before the threat model.</p>
+</div>
+<div style="display:flex;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:23px;color:#6FD3C6">GO DEEPER</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#C2CCD6">portswigger.net/research &mdash; &ldquo;CSS: the bomb inside your inbox&rdquo;</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#C2CCD6">github.com/cispa/cascading-spy-sheets</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#6FD3C6"><a href="https://blog.talosintelligence.com/css-abuse-for-evasion-and-tracking/">blog.talosintelligence.com &mdash; &ldquo;Abusing with style&rdquo;</a></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:23px;color:#6FD3C6">THE HEADLINE CVEs</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#C2CCD6">CVE-2026-2441 &mdash; Chrome CSS use-after-free</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#C2CCD6">CVE-2024-42010 &mdash; Roundcube CSS leak</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:25px;line-height:1.5;color:#C2CCD6">CVE-2017-15417 &mdash; mix-blend-mode</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-family:'JetBrains Mono', monospace;font-size:24px;color:#6B7684">Andrey Sidorov &middot; MelbCSS &middot; questions welcome &mdash; especially the &ldquo;but surely&hellip;&rdquo; kind</p>
+<aside>Close + resources, leave it up for Q&A. The three one-liners at top are the whole talk compressed &mdash; say them and stop. The sources are primary (PortSwigger research, the NDSS repo, Talos) plus the three headline CVEs. The footer invites the "but surely that doesn't really work" questions, which you can answer with the live PoC repos. Offer to send the full link list. ~40 seconds including the thanks. Total deck runs ~16-18 min at these timings.</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-36.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">37 / 37</a>
+<a class="next" href="slide-01.html">Next &rsaquo;</a>
+</div>
+</body></html>

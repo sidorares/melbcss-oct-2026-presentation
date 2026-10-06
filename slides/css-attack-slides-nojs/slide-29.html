@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>29 / 37 - CSS as an Attack Vector</title>
+<style>
+  html,body{ margin:0; padding:0; background:#000; }
+  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  section aside{ display:none; }
+  body{ position:relative; width:1920px; height:1080px; }
+  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+           background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
+           font-family:monospace; font-size:20px; text-decoration:none; }
+  .nav a:hover{ border-color:#6fd3c6; }
+  .nav .prev{ left:24px; }
+  .nav .next{ right:24px; }
+  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+</style>
+</head><body>
+<section id="no5" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;align-items:baseline;gap:32px">
+<h2 style="font-size:132px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
+<p style="font-size:38px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1180px">It logs your keystrokes and fingerprints you &mdash; still no script.</p>
+</div>
+<div style="display:flex;gap:28px;align-items:stretch">
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">SCRIPTLESS FINGERPRINTING &middot; NDSS 2025</p>
+<p style="font-size:29px;line-height:1.4;color:#C2CCD6">&ldquo;Cascading Spy Sheets&rdquo;: container queries, CSS math &amp; selectors fingerprint users in Tor and email. 8 of 21 clients.</p>
+</div>
+<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">CSS-ONLY KEYLOGGER &middot; PortSwigger</p>
+<p style="font-size:29px;line-height:1.4;color:#C2CCD6">A styled <b style="color:#E8ECF1;font-weight:600">select</b> + <i>:checked</i> + <i>@keyframes</i> + <i>-webkit-text-security</i> spoofs the Outlook login and steals the password &mdash; live.</p>
+</div>
+</div>
+<p style="font-size:31px;line-height:1.4;color:#C2CCD6;max-width:1620px">Capturing keystrokes and tracking users were supposed to need a script. They don't.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">The &ldquo;safe&rdquo; no-JavaScript environments &mdash; Tor, email &mdash; are exactly where this works.</p>
+<aside>The claim "surely keylogging/tracking needs JS" backfires. LEFT: the NDSS "Cascading Spy Sheets" paper shows pure-CSS fingerprinting works in precisely the places people disable JS for privacy (Tor, email clients) &mdash; 8 of 21 tested clients. RIGHT: PortSwigger built a real-time keylogger out of a styled select element, :checked, animations and -webkit-text-security (which renders the dropdown as masked password dots), running inside Outlook's own sanitizer and DOMPurify, spoofing the login screen. The punchline: you turned off JavaScript and still got keylogged. ~65 seconds. Then, almost hopeful: "okay, I'll let the AI summarise the email and strip hidden text."</aside>
+</section>
+<div class="nav">
+<a class="prev" href="slide-28.html">&lsaquo; Prev</a>
+<a class="count" href="index.html">29 / 37</a>
+<a class="next" href="slide-30.html">Next &rsaquo;</a>
+</div>
+</body></html>

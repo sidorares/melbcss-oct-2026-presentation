@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
-<title>33 / 37 - CSS as an Attack Vector</title>
+<title>33 / 38 - CSS as an Attack Vector</title>
 <style>
   html,body{ margin:0; padding:0; background:#14181f; }
   section{ position:relative; min-height:100vh; box-sizing:border-box; }
@@ -20,25 +20,17 @@
   .nav .count{ left:50%; transform:translateX(-50%); width:96px; text-align:center; color:#8b97a3; }
 </style>
 </head><body>
-<section id="no7" data-transition="magic" style="background:#2A1416;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:center">
-<div style="display:flex;flex-direction:column;gap:26px">
-<h2 style="font-size:150px;font-weight:700;line-height:0.88;color:#FF5C49">No.</h2>
-<p style="font-size:42px;font-weight:600;line-height:1.18;color:#FFFFFF">The engine you trusted to render it <i>is</i> the vulnerability.</p>
-<p style="font-size:32px;line-height:1.4;color:#E4CCC9">A use-after-free in Chrome's CSS. Visit a crafted page &mdash; no clicks, no auth &mdash; and code runs inside the sandbox.</p>
-<p style="font-family:'JetBrains Mono', monospace;font-size:24px;color:#C79B96">CVE-2026-2441 &middot; CVSS 8.8 &middot; exploited in the wild &middot; CISA KEV</p>
-</div>
-<div style="background:#160B0C;border:1px solid #4A2422;border-radius:16px;padding:44px;display:flex;flex-direction:column;gap:22px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#A56B66">the component</p>
-<p style="font-family:'JetBrains Mono', monospace;font-size:27px;line-height:1.4;color:#FF8A7A">CSSFontFeatureValuesMap</p>
-<p style="font-size:27px;line-height:1.4;color:#E4CCC9">Chrome loops over a set of CSS font-feature values <b style="color:#FFFFFF;font-weight:600">while modifying it.</b> Classic iterator invalidation.</p>
-<hr style="border-top:1px solid #4A2422;width:100%">
-<p style="font-size:30px;line-height:1.4;color:#FFFFFF;font-weight:600">No JavaScript. A font rule is the whole exploit.</p>
-</div>
-<aside>The floor drops out &mdash; the hammer of the whole talk. Everything before could be filed under "clever but needs injection." This is textbook memory-corruption remote code execution and the vector is CSS. Say the numbers slowly: CVSS 8.8, actively exploited in the wild, the first Chrome zero-day of 2026, on CISA's Known Exploited Vulnerabilities list with a federal patch deadline. Root cause: an iterator-invalidation use-after-free in CSSFontFeatureValuesMap (advanced OpenType font features) &mdash; Chrome frees memory then reuses the dangling reference. Reported by Shaheen Fazim, patched in Chrome 145. Land the last line hard: this needed no JavaScript; a crafted stylesheet/font rule was the trigger. Give it room. ~70 seconds. Then, quietly: "so... can we EVER go on holiday?"</aside>
+<section id="fix7" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:88px 96px 96px;display:flex;flex-direction:column;gap:107px">
+<img src="assets/281ed89c4315be668a9d8046d65d8931.png" alt="Man relaxing on a pink pool float with a pineapple drink" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<div style="position:absolute;left:0px;bottom:0px;width:100%;height:560px;background:linear-gradient(0deg, #080A0E 8%, rgba(8,10,14,0) 100%)"></div>
+<p style="position:relative;margin:0;width:360px;font-family:'JetBrains Mono', monospace;font-size:26px;font-weight:700;color:#0C1B19;background:#6FD3C6;padding:16px 30px;border-radius:999px;text-align:center">FIX #7</p>
+<p style="position:relative;margin:0;max-width:1500px;font-size:48px;font-weight:600;line-height:1.3;color:#FFFFFF;margin-top:auto">&ldquo;Fine. I&rsquo;ll trust nothing but the browser&rsquo;s own CSS engine to render it.&rdquo;</p>
+<h2 style="position:relative;margin:0;max-width:1600px;font-size:92px;font-weight:700;line-height:1.05;color:#FFFFFF">Can we go on holiday now?</h2>
+<aside>Beat 7 setup. The last line of defence. Say it almost hopeful. Then the floor drops out: the engine is the vuln.</aside>
 </section>
 <div class="nav">
 <a class="prev" href="slide-32.html">&lsaquo; Prev</a>
-<a class="count" href="index.html">33 / 37</a>
+<a class="count" href="index.html">33 / 38</a>
 <a class="next" href="slide-34.html">Next &rsaquo;</a>
 </div>
 </body></html>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
-<title>31 / 37 - CSS as an Attack Vector</title>
+<title>31 / 38 - CSS as an Attack Vector</title>
 <style>
   html,body{ margin:0; padding:0; background:#14181f; }
   section{ position:relative; min-height:100vh; box-sizing:border-box; }
@@ -20,28 +20,17 @@
   .nav .count{ left:50%; transform:translateX(-50%); width:96px; text-align:center; color:#8b97a3; }
 </style>
 </head><body>
-<section id="no6" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:28px">
-<div style="display:flex;align-items:baseline;gap:32px">
-<h2 style="font-size:132px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
-<p style="font-size:38px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1180px">Now the AI works for the attacker.</p>
-</div>
-<div style="display:flex;gap:28px;align-items:stretch">
-<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">GEMINI &middot; Mozilla 0din, 2025</p>
-<p style="font-size:29px;line-height:1.4;color:#C2CCD6"><i>font-size:0</i> + white-on-white text hides a prompt. &ldquo;Summarise this email&rdquo; &rarr; a fake &ldquo;your password is compromised&rdquo; alert.</p>
-</div>
-<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">ATLAS &middot; PortSwigger, 2026</p>
-<p style="font-size:29px;line-height:1.4;color:#C2CCD6"><i>:before</i>/<i>:after</i> show the LLM different text than the human. The AI browser opens attacker tabs on command.</p>
-</div>
-</div>
-<p style="font-size:31px;line-height:1.4;color:#C2CCD6;max-width:1620px">You stripped what <b style="color:#E8ECF1;font-weight:600">you</b> could see. The model reads a different document than the human does.</p>
-<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">Prompt injection is the new email macro &mdash; no link, no attachment, nothing to scan.</p>
-<aside>The modern pivot, and the one that will unsettle this audience most because everyone's shipping AI features. LEFT: the Gemini bug (Mozilla's 0din bounty) &mdash; hide instructions with font-size:0 and white text; when the user clicks "Summarise", Gemini obeys the invisible prompt and emits a convincing fake security alert with an attacker phone number. No link, no attachment. RIGHT: PortSwigger against OpenAI's Atlas browser &mdash; opacity hides text from the human while :before/:after pseudo-content feeds the LLM different text, so victim and model see two different emails, and the AI browser can be driven to open attacker URLs. The theme: "strip hidden text" fails because you and the model don't agree on what's hidden. ~65 seconds. Then the last hope: "fine, I'll trust the browser's own CSS engine."</aside>
+<section id="fix6" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:88px 96px 96px;display:flex;flex-direction:column;gap:107px">
+<img src="assets/f5a3b4ee6c5cf4b0af1e685267d7b892.png" alt="Woman resting in a hammock on a tropical beach" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<div style="position:absolute;left:0px;bottom:0px;width:100%;height:560px;background:linear-gradient(0deg, #080A0E 8%, rgba(8,10,14,0) 100%)"></div>
+<p style="position:relative;margin:0;width:360px;font-family:'JetBrains Mono', monospace;font-size:26px;font-weight:700;color:#0C1B19;background:#6FD3C6;padding:16px 30px;border-radius:999px;text-align:center">FIX #6</p>
+<p style="position:relative;margin:0;max-width:1500px;font-size:48px;font-weight:600;line-height:1.3;color:#FFFFFF;margin-top:auto">&ldquo;New plan: let the AI read the email and just summarise it. I&rsquo;ll strip hidden text first.&rdquo;</p>
+<h2 style="position:relative;margin:0;max-width:1600px;font-size:92px;font-weight:700;line-height:1.05;color:#FFFFFF">Can we go on holiday now?</h2>
+<aside>Beat 6 setup. The modern pivot. The NO turns the AI itself into the attacker.</aside>
 </section>
 <div class="nav">
 <a class="prev" href="slide-30.html">&lsaquo; Prev</a>
-<a class="count" href="index.html">31 / 37</a>
+<a class="count" href="index.html">31 / 38</a>
 <a class="next" href="slide-32.html">Next &rsaquo;</a>
 </div>
 </body></html>

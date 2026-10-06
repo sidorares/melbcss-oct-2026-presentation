@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
-<title>29 / 37 - CSS as an Attack Vector</title>
+<title>29 / 38 - CSS as an Attack Vector</title>
 <style>
   html,body{ margin:0; padding:0; background:#14181f; }
   section{ position:relative; min-height:100vh; box-sizing:border-box; }
@@ -20,28 +20,18 @@
   .nav .count{ left:50%; transform:translateX(-50%); width:96px; text-align:center; color:#8b97a3; }
 </style>
 </head><body>
-<section id="no5" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:28px">
-<div style="display:flex;align-items:baseline;gap:32px">
-<h2 style="font-size:132px;font-weight:700;line-height:0.9;color:#FF5C49">No.</h2>
-<p style="font-size:38px;font-weight:600;line-height:1.2;color:#E8ECF1;width:1180px">It logs your keystrokes and fingerprints you &mdash; still no script.</p>
-</div>
-<div style="display:flex;gap:28px;align-items:stretch">
-<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">SCRIPTLESS FINGERPRINTING &middot; NDSS 2025</p>
-<p style="font-size:29px;line-height:1.4;color:#C2CCD6">&ldquo;Cascading Spy Sheets&rdquo;: container queries, CSS math &amp; selectors fingerprint users in Tor and email. 8 of 21 clients.</p>
-</div>
-<div style="flex:1;background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:38px;display:flex;flex-direction:column;gap:14px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#6FD3C6">CSS-ONLY KEYLOGGER &middot; PortSwigger</p>
-<p style="font-size:29px;line-height:1.4;color:#C2CCD6">A styled <b style="color:#E8ECF1;font-weight:600">select</b> + <i>:checked</i> + <i>@keyframes</i> + <i>-webkit-text-security</i> spoofs the Outlook login and steals the password &mdash; live.</p>
-</div>
-</div>
-<p style="font-size:31px;line-height:1.4;color:#C2CCD6;max-width:1620px">Capturing keystrokes and tracking users were supposed to need a script. They don't.</p>
-<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">The &ldquo;safe&rdquo; no-JavaScript environments &mdash; Tor, email &mdash; are exactly where this works.</p>
-<aside>The claim "surely keylogging/tracking needs JS" backfires. LEFT: the NDSS "Cascading Spy Sheets" paper shows pure-CSS fingerprinting works in precisely the places people disable JS for privacy (Tor, email clients) &mdash; 8 of 21 tested clients. RIGHT: PortSwigger built a real-time keylogger out of a styled select element, :checked, animations and -webkit-text-security (which renders the dropdown as masked password dots), running inside Outlook's own sanitizer and DOMPurify, spoofing the login screen. The punchline: you turned off JavaScript and still got keylogged. ~65 seconds. Then, almost hopeful: "okay, I'll let the AI summarise the email and strip hidden text."</aside>
+<section id="fix5" data-transition="fade" style="background:#14181f;padding:88px 96px 96px;display:flex;flex-direction:column;gap:107px">
+  <img src="assets/281ed89c4315be668a9d8046d65d8931.png" alt="Man relaxing on a pink pool float with a pineapple drink" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+  <div style="position:absolute;bottom:0;left:0;width:100%;height:560px;display:flex;flex-direction:column;background:linear-gradient(0deg, #080a0e 8%, #080a0e00 100%)">
+  </div>
+  <p style="position:relative;margin:0;width:360px;padding:16px 30px;font-family:'JetBrains Mono', monospace;font-size:26px;font-weight:700;text-align:center;color:#0c1b19;background:#6fd3c6;border-radius:256px">FIX #5</p>
+  <p style="position:relative;margin:0;max-width:1560px;font-family:'IBM Plex Sans', Arial, sans-serif;font-size:48px;font-weight:600;line-height:1.3;color:#ffffff;margin-top:auto">“It can read data, sure. But it can't log what I type or fingerprint me — that needs JavaScript.”</p>
+  <h2 style="position:relative;margin:0;max-width:1600px;font-family:'IBM Plex Sans', Arial, sans-serif;font-size:92px;font-weight:700;line-height:1.05;color:#ffffff">Can we go on holiday now?</h2>
+  <aside>Beat 5 setup. The claim sounds safe — surely logging keystrokes or fingerprinting needs a script. Say it with confidence; the No shows a CSS-only keylogger and scriptless fingerprinting. We deliberately no longer frame this as "disable JavaScript" — by now the whole talk has already been pure-CSS, so that framing would land late. ~10 seconds.</aside>
 </section>
 <div class="nav">
 <a class="prev" href="slide-28.html">&lsaquo; Prev</a>
-<a class="count" href="index.html">29 / 37</a>
+<a class="count" href="index.html">29 / 38</a>
 <a class="next" href="slide-30.html">Next &rsaquo;</a>
 </div>
 </body></html>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
-<title>35 / 37 - CSS as an Attack Vector</title>
+<title>35 / 38 - CSS as an Attack Vector</title>
 <style>
   html,body{ margin:0; padding:0; background:#14181f; }
   section{ position:relative; min-height:100vh; box-sizing:border-box; }
@@ -20,35 +20,27 @@
   .nav .count{ left:50%; transform:translateX(-50%); width:96px; text-align:center; color:#8b97a3; }
 </style>
 </head><body>
-<section id="hardening" data-transition="fade" style="background:#1B2029;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px;display:flex;flex-direction:column;gap:30px">
+<section id="scoreboard" data-section="How to actually defend, and whether we ever get that holiday" data-transition="push" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:104px 128px 128px;display:flex;flex-direction:column;gap:30px">
 <div style="display:flex;flex-direction:column;gap:10px">
-<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#6FD3C6">What actually helps</p>
-<h2 style="font-size:66px;font-weight:600;line-height:1.05">You don't sanitize your way out. You isolate.</h2>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#FF5C49">Has this happened before?</p>
+<h2 style="font-size:66px;font-weight:600;line-height:1.05">The scoreboard of failed holidays</h2>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
-<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">ISOLATE IT</h3>
-<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Render untrusted HTML in a <b style="color:#E8ECF1;font-weight:600">sandboxed iframe.</b> No shared trust boundary, nothing to break out of.</p>
-</div>
-<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">CUT THE REQUESTS</h3>
-<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Route images through a <b style="color:#E8ECF1;font-weight:600">proxy</b>, block <i>data:</i> URLs, and don't allow-list domains an attacker can use.</p>
-</div>
-<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">ALLOW-LIST CHARACTERS</h3>
-<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Validate names and keywords with a strict character allow-list &mdash; not a blocklist &mdash; to survive CSSOM mutation.</p>
-</div>
-<div style="background:#0C0F14;border:1px solid #2A313C;border-radius:14px;padding:34px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-family:'JetBrains Mono', monospace;font-size:25px;font-weight:700;color:#6FD3C6">REVIEW &amp; PATCH</h3>
-<p style="font-size:27px;line-height:1.4;color:#C2CCD6">Read CSS diffs like code. Watch your supply chain &amp; themes. Keep the browser updated &mdash; the engine bugs are real.</p>
-</div>
-</div>
-<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #6FD3C6;padding:4px 0 4px 32px">Blocklists lose to parser differentials. Isolation removes the game entirely.</p>
-<aside>The constructive payoff &mdash; give them something to do Monday. The through-line of every failure in this talk is a blocklist trying to out-guess a browser, which it can't; so the headline is "isolate, don't sanitize." Four concrete moves: (1) sandboxed iframes so untrusted content shares no trust boundary with your UI; (2) image proxy + block data: URLs + no attacker-usable allow-listed domains; (3) when you must validate, allow-list characters not keywords, which defeats the CSSOM mutation trick; (4) treat CSS as code in review, watch dependencies and community themes (callback to MelbCSS), and patch browsers because the engine UAF is not hypothetical. ~55 seconds.</aside>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif;color:#C2CCD6;font-size:28px;border:none">
+<tr><th style="width:11%;text-align:left;color:#6FD3C6;font-weight:600;padding:13px 8px">Year</th><th style="width:33%;text-align:left;color:#6FD3C6;font-weight:600;padding:13px 8px">Fix that failed</th><th style="width:56%;text-align:left;color:#6FD3C6;font-weight:600;padding:13px 8px">What actually happened</th></tr>
+<tr><td style="padding:13px 8px">2017</td><td style="padding:13px 8px">&ldquo;No JS = safe&rdquo;</td><td style="padding:13px 8px;color:#8B97A3">mix-blend-mode read Facebook identity cross-origin</td></tr>
+<tr><td style="padding:13px 8px">2019</td><td style="padding:13px 8px">&ldquo;Scanners will catch it&rdquo;</td><td style="padding:13px 8px;color:#8B97A3">@font-face cipher hid a phishing page</td></tr>
+<tr><td style="padding:13px 8px">2024</td><td style="padding:13px 8px">&ldquo;Sanitize the CSS&rdquo;</td><td style="padding:13px 8px;color:#8B97A3">Roundcube parser differential &middot; CVE-2024-42010</td></tr>
+<tr><td style="padding:13px 8px">'24&ndash;'25</td><td style="padding:13px 8px">&ldquo;Disable JavaScript&rdquo;</td><td style="padding:13px 8px;color:#8B97A3">Scriptless fingerprinting + CSS keyloggers</td></tr>
+<tr><td style="padding:13px 8px">2025</td><td style="padding:13px 8px">&ldquo;Let the AI read it&rdquo;</td><td style="padding:13px 8px;color:#8B97A3">Hidden-CSS prompt injection (Gemini)</td></tr>
+<tr><td style="padding:13px 8px;color:#FF5C49;font-weight:600">2026</td><td style="padding:13px 8px;color:#FF5C49;font-weight:600">&ldquo;Trust the engine&rdquo;</td><td style="padding:13px 8px;color:#C2CCD6">Chrome CSS use-after-free &rarr; RCE, in the wild</td></tr>
+<tr><td style="padding:13px 8px;color:#FF5C49;font-weight:600">2026</td><td style="padding:13px 8px;color:#FF5C49;font-weight:600">&ldquo;Webmail's had decades&rdquo;</td><td style="padding:13px 8px;color:#C2CCD6">CSS-only keyloggers across Gmail, Outlook &amp; co.</td></tr>
+</table>
+<p style="font-family:'JetBrains Mono', monospace;font-size:26px;color:#8B97A3;border-left:4px solid #FF5C49;padding:4px 0 4px 32px">Every &ldquo;this never works&rdquo; above is a real CVE or a Black Hat demo.</p>
+<aside>This is the "has that happened before?" recap, reframed as the scoreboard of every failed holiday. Don't read every row &mdash; let them scan it and feel the accumulation. Point out it maps one-to-one onto the fixes we just tried, and that each line is a real CVE or published research, not hypotheticals. The two red 2026 rows are this year. This earns the turn to defenses: we've established it's real, recurring, and accelerating. ~40 seconds.</aside>
 </section>
 <div class="nav">
 <a class="prev" href="slide-34.html">&lsaquo; Prev</a>
-<a class="count" href="index.html">35 / 37</a>
+<a class="count" href="index.html">35 / 38</a>
 <a class="next" href="slide-36.html">Next &rsaquo;</a>
 </div>
 </body></html>

@@ -3,17 +3,18 @@
 <meta charset="utf-8">
 <title>1 / 37 - CSS as an Attack Vector</title>
 <style>
-  html,body{ margin:0; padding:0; background:#000; }
-  section{ position:relative; width:1920px; height:1080px; overflow:hidden; box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#14181f; }
+  section{ position:relative; min-height:100vh; box-sizing:border-box; }
   section aside{ display:none; }
-  body{ position:relative; width:1920px; height:1080px; }
-  .nav a{ position:absolute; bottom:20px; display:inline-block; padding:10px 18px;
+  section :is(h1,h2,h3,p,ul,hr){ margin:0; }
+  section hr{ border:0; }
+  .nav a{ position:fixed; z-index:1; bottom:20px; display:inline-block; padding:10px 18px;
            background:#0c0f14; color:#e8ecf1; border:1px solid #2a313c; border-radius:10px;
            font-family:monospace; font-size:20px; text-decoration:none; }
   .nav a:hover{ border-color:#6fd3c6; }
   .nav .prev{ left:24px; }
   .nav .next{ right:24px; }
-  .nav .count{ left:912px; width:96px; text-align:center; color:#8b97a3; }
+  .nav .count{ left:50%; transform:translateX(-50%); width:96px; text-align:center; color:#8b97a3; }
 </style>
 </head><body>
 <section id="title" data-section="The premise, the threat model, and the running gag" data-transition="fade" style="background:#14181F;color:#E8ECF1;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">

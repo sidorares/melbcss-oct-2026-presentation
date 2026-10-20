@@ -8,10 +8,11 @@
 // intro run while the JS thread does the trailer's preparation — building a
 // million table rows, a galaxy's geometry — without a dropped frame on the
 // screen. Elsewhere the same document runs on `<Html>`'s own clock.
-import type { ReactElement } from 'react';
+import { useEffect, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import { Html } from '@react-x11/components/html';
-import { GROUND } from './shell.js';
+import { ACCENT, GROUND } from './shell.js';
 
 const FONT = `-apple-system, "SF Pro Display", "Helvetica Neue", Inter, "Segoe UI", sans-serif`;
 
@@ -74,7 +75,13 @@ const OUTRO = `<!doctype html>
 <div class="note">Every frame you just saw was rendered live — nothing here was a recording.</div>
 `;
 
-function Centered({ source }: { source: string }): ReactElement {
+function Centered({
+  source,
+  children,
+}: {
+  source: string;
+  children?: ReactNode;
+}): ReactElement {
   return (
     <box
       style={{
@@ -89,9 +96,82 @@ function Centered({ source }: { source: string }): ReactElement {
         selectable={false}
         defaultColorScheme="dark"
       />
+      {children}
     </box>
   );
 }
 
-export const Intro = (): ReactElement => <Centered source={INTRO} />;
+/** When the Start button fades in: once the intro's own lines are up. */
+const START_SHOWN_AT = 3000;
+
+/**
+ * Start, under the intro: the trailer waits on the first screen until it is
+ * pressed, so it can be put up before a talk and started on cue. A pill in
+ * the intro's own look rather than core's `<Button>`, which on macOS is the
+ * native push button — a fixed small height, whatever it is given — and
+ * this one is seen from the back of a room. It fades in once the title has
+ * finished arriving and away as it is pressed; the keys that start it —
+ * Return, Space, → and Page Down, what a presentation clicker sends — are
+ * the director's (main.tsx).
+ */
+function StartButton({
+  waiting,
+  onStart,
+}: {
+  waiting: boolean;
+  onStart: () => void;
+}): ReactElement {
+  const [shown, setShown] = useState(false);
+  const [hover, setHover] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setShown(true), START_SHOWN_AT);
+    return () => clearTimeout(id);
+  }, []);
+  return (
+    <box
+      style={{
+        alignItems: 'center',
+        marginTop: 30,
+        opacity: shown && waiting ? 1 : 0,
+        transition: { opacity: waiting ? 700 : 300 },
+      }}
+    >
+      <box
+        aria-label="Start"
+        onClick={waiting ? onStart : undefined}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 12,
+          paddingLeft: 40,
+          paddingRight: 40,
+          paddingTop: 14,
+          paddingBottom: 14,
+          borderRadius: 999,
+          backgroundColor: hover ? '#8aa3ff' : ACCENT,
+          transition: { backgroundColor: 150 },
+        }}
+      >
+        <text style={{ fontSize: 26, fontWeight: 'bold', color: '#ffffff' }}>
+          ▶ Start
+        </text>
+      </box>
+    </box>
+  );
+}
+
+/** The opening title; with `onStart`, the Start button under it. */
+export const Intro = ({
+  waiting = false,
+  onStart,
+}: {
+  waiting?: boolean;
+  onStart?: () => void;
+}): ReactElement => (
+  <Centered source={INTRO}>
+    {onStart ? <StartButton waiting={waiting} onStart={onStart} /> : null}
+  </Centered>
+);
 export const Outro = (): ReactElement => <Centered source={OUTRO} />;

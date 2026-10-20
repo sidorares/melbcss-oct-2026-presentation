@@ -163,8 +163,10 @@ export function LowerThird({ kicker, title, subtitle }: Caption): ReactElement {
   );
 }
 
-/** How long a card takes to fade up, and to fade away. */
-export const CARD_FADE_MS = 1000;
+/** How long a card takes to fade up — slow, so the words arrive before
+ *  they are read — and to fade away into the scene. */
+export const CARD_FADE_IN_MS = 2000;
+export const CARD_FADE_OUT_MS = 1000;
 
 /**
  * The question, on black, in very large type — held still, so it is read
@@ -196,8 +198,8 @@ export function SmashCard({
 }
 
 /**
- * The opaque ground a card stands on. It fades up out of black, holds, and
- * fades away into whatever is under it, a second each way.
+ * The opaque ground a card stands on. It fades up out of black over two
+ * seconds, holds, and fades away into whatever is under it in one.
  *
  * The whole card — ground and words — lives on a Core Animation layer of
  * its own from its first frame to its last, and that is the point of the
@@ -237,7 +239,7 @@ function CardGround({
     let frames = 0;
     const off = clock.on((now) => {
       frames++;
-      if (now - start >= ms - CARD_FADE_MS) {
+      if (now - start >= ms - CARD_FADE_OUT_MS) {
         setPhase('away');
         off();
       } else if (frames === 2) {
@@ -254,7 +256,10 @@ function CardGround({
         justifyContent: 'center',
         backgroundColor: GROUND,
         opacity: phase === 'up' ? 1 : 0,
-        transition: { opacity: CARD_FADE_MS },
+        // the duration a change is made with is the one it runs at
+        transition: {
+          opacity: phase === 'away' ? CARD_FADE_OUT_MS : CARD_FADE_IN_MS,
+        },
         animation: {
           backgroundColor: { to: GROUND_NEAR, duration: 1500, alternate: true },
         },

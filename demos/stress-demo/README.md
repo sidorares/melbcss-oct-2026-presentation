@@ -22,6 +22,10 @@ npm run prefetch   # optional: fetch the map tiles and make the clip up front
 npm start          # under Bun; `npm run start:node` under Node
 ```
 
+It opens on the title and waits there, preparing its data, until you press
+Start — or Return, Space, → or Page Down, which is what a presentation
+clicker sends. `npm start -- --autostart` plays at once.
+
 `main.tsx` lists every flag — `--only=map,flow`, `--from=charts`,
 `--speed=0.5`, `--size=1920x1080`, `--loop`, `--exit`, `--snapshots=dir`
 and the rest — and why each part of the trailer is built the way it is.

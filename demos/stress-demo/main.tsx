@@ -12,7 +12,9 @@
 // renders the video clip with ffmpeg in the background; `--prefetch` does
 // both up front.
 //
-//   npm start                                 # the whole trailer
+//   npm start                                 # the whole trailer, on Start
+//   npm start -- --autostart                  # no Start button: play at once
+//   npm start -- --autostart=4000             # …or press it after 4 s
 //   npm start -- --loop                       # round and round
 //   npm start -- --from=map                   # start at a shot
 //   npm start -- --only=map,flow              # just these shots
@@ -58,10 +60,26 @@
 //  - **Tiles are fetched before the map flies** (scenes/map.tsx), and kept on
 //    disk, so the second run never touches the network.
 import { writeFileSync } from 'node:fs';
-import { Activity, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Activity,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import { ThemeProvider, createRoot } from 'react-x11';
 import type { FrameRate } from 'react-x11';
+import {
+  XK_KP_ENTER,
+  XK_PAGE_DOWN,
+  XK_RETURN,
+  XK_RIGHT,
+  XK_SPACE,
+} from 'react-x11/keysyms';
 
 import { Clock, ClockContext } from './clock.js';
 import type { FrameSource } from './clock.js';
@@ -140,10 +158,10 @@ interface Shot extends Caption {
  *  only takes the card away. */
 const WARM_MS = 1600;
 
-/** How long a title card holds, its half-second fades included: long
- *  enough to read twice. The scenes move fast; the words between them
- *  stand still. */
-const CARD_MS = 3600;
+/** How long a title card holds, its fades included — two seconds up, one
+ *  away: long enough to read twice. The scenes move fast; the words
+ *  between them stand still. */
+const CARD_MS = 4600;
 
 /**
  * A scene and the card that introduces it. The card says what is coming in
@@ -179,14 +197,43 @@ function scene(
   ];
 }
 
+// --- the start ----------------------------------------------------------------
+
+/** What the first screen's Start reads: whether the trailer is still
+ *  waiting on it, and what pressing it does. */
+const StartContext = createContext<{ waiting: boolean; start: () => void }>({
+  waiting: false,
+  start: () => {},
+});
+
+/** The intro, with its Start button when the trailer waits for one. */
+function IntroScreen(): ReactElement {
+  const { waiting, start } = useContext(StartContext);
+  return <Intro waiting={waiting} onStart={WAITS ? start : undefined} />;
+}
+
+/** The keys that press Start: Return and Space as on the button, and → and
+ *  Page Down, which are what a presentation clicker sends. */
+const START_KEYS = new Set<number>([
+  XK_RETURN,
+  XK_KP_ENTER,
+  XK_SPACE,
+  XK_RIGHT,
+  XK_PAGE_DOWN,
+]);
+
+/** How long the intro stays up once Start is pressed: the button fades,
+ *  and the cut comes. */
+const START_TAIL_MS = 1200;
+
 const ALL_SHOTS: Shot[] = [
-  { id: 'intro', ms: 5200, render: () => <Intro /> },
+  { id: 'intro', ms: 5200, render: () => <IntroScreen /> },
   {
     id: 'question',
-    ms: 3400,
+    ms: 4400,
     card: true,
     render: (p) => (
-      <SmashCard text="But can it be fast?" start={p.start} ms={3400 * speed} />
+      <SmashCard text="But can it be fast?" start={p.start} ms={4400 * speed} />
     ),
   },
   ...scene(
@@ -322,7 +369,7 @@ const ALL_SHOTS: Shot[] = [
       title: 'A terminal under a flood',
       subtitle: 'Megabytes a second of ANSI · then a full-screen program',
     },
-    7000,
+    10000,
     (p) => <TerminalScene {...p} />,
   ),
   ...scene(
@@ -345,7 +392,7 @@ const ALL_SHOTS: Shot[] = [
       subtitle:
         'Six scenes live in one window · two GL surfaces · one frame loop',
     },
-    7200,
+    10200,
     (p) => <FinaleScene {...p} />,
     { cold: true },
   ),
@@ -365,6 +412,10 @@ function pickShots(): Shot[] {
 }
 
 const SHOTS = pickShots();
+
+/** Whether the trailer waits on the first screen for Start: when it opens
+ *  on the intro, unless `--autostart` says to play at once. */
+const WAITS = SHOTS[0].id === 'intro' && !flag('autostart');
 
 /**
  * What the director keeps mounted, as scene index → how: the scene on
@@ -416,6 +467,35 @@ function App({ clock, meter }: { clock: Clock; meter: Meter }): ReactElement {
   const [warm, setWarm] = useState(false);
   const live = useRef(shot);
   live.current = shot;
+  // Held on the intro until Start: the clock runs, the intro animates and
+  // the data is prepared behind it, but no cut is made.
+  const [waiting, setWaiting] = useState(WAITS);
+  const held = useRef(WAITS);
+  const start = useCallback(() => {
+    if (!held.current) return;
+    held.current = false;
+    setWaiting(false);
+    // the intro's last beat from here, then the trailer
+    const now = performance.now();
+    const { index } = live.current;
+    const resumed = {
+      index,
+      start: now - (SHOTS[index].ms - START_TAIL_MS) * clock.speed,
+    };
+    live.current = resumed;
+    setShot(resumed);
+    meter.begin(SHOTS[index].id, now);
+  }, [clock, meter]);
+  const startContext = useMemo(() => ({ waiting, start }), [waiting, start]);
+
+  // `--autostart=ms`: Start pressed for you, that long after the window
+  // opens — the button's own path, for a run nobody is at
+  useEffect(() => {
+    const at = Number(arg('autostart'));
+    if (!WAITS || !(at >= 0)) return;
+    const id = setTimeout(start, at);
+    return () => clearTimeout(id);
+  }, [start]);
   const windowRef = useRef<FrameSource>(null);
   const rootBox = useRef<{ root?: unknown } | null>(null);
 
@@ -446,6 +526,7 @@ function App({ clock, meter }: { clock: Clock; meter: Meter }): ReactElement {
   useEffect(
     () =>
       clock.on((now) => {
+        if (held.current) return;
         const { index, start } = live.current;
         const ms = SHOTS[index].ms * clock.speed;
         if (now - start < ms) {
@@ -540,46 +621,55 @@ function App({ clock, meter }: { clock: Clock; meter: Meter }): ReactElement {
         height={height}
         frameRate={frameRate}
         style={{ backgroundColor: GROUND }}
+        onKeyDown={(ev) => {
+          if (held.current && START_KEYS.has(ev.keysym ?? 0)) start();
+        }}
       >
-        <box ref={rootBox as never} style={{ flexGrow: 1 }}>
-          <TopBar count={SHOTS.length} index={shot.index} />
-          <Stage
-            onSize={(w, h) =>
-              setStage((s) =>
-                s.width === w && s.height === h ? s : { width: w, height: h },
-              )
-            }
-          >
-            {[...mounts].map(([i, mount]) => (
-              <Activity
-                key={SHOTS[i].id}
-                mode={mount === 'hidden' ? 'hidden' : 'visible'}
-              >
-                <box style={mount === 'offstage' ? offstage : box}>
-                  {SHOTS[i].render({
-                    active: mount === 'active',
-                    start: mount === 'active' ? shot.start : NaN,
+        <StartContext.Provider value={startContext}>
+          <box ref={rootBox as never} style={{ flexGrow: 1 }}>
+            <TopBar count={SHOTS.length} index={shot.index} />
+            <Stage
+              onSize={(w, h) =>
+                setStage((s) =>
+                  s.width === w && s.height === h ? s : { width: w, height: h },
+                )
+              }
+            >
+              {[...mounts].map(([i, mount]) => (
+                <Activity
+                  key={SHOTS[i].id}
+                  mode={mount === 'hidden' ? 'hidden' : 'visible'}
+                >
+                  <box style={mount === 'offstage' ? offstage : box}>
+                    {SHOTS[i].render({
+                      active: mount === 'active',
+                      start: mount === 'active' ? shot.start : NaN,
+                      size: stage,
+                    })}
+                  </box>
+                </Activity>
+              ))}
+              {/* after the scenes, so it is painted over them — and on macOS
+                on a layer of its own over them, which is what lets the scene
+                under it be laid out and painted while it is up */}
+              {card ? (
+                <box key={card.id} style={box}>
+                  {card.render({
+                    active: true,
+                    start: shot.start,
                     size: stage,
                   })}
                 </box>
-              </Activity>
-            ))}
-            {/* after the scenes, so it is painted over them — and on macOS
-                on a layer of its own over them, which is what lets the scene
-                under it be laid out and painted while it is up */}
-            {card ? (
-              <box key={card.id} style={box}>
-                {card.render({ active: true, start: shot.start, size: stage })}
-              </box>
-            ) : null}
-          </Stage>
-          <LowerThird
-            key={current.id}
-            kicker={current.kicker}
-            title={current.title}
-            subtitle={current.subtitle}
-          />
-        </box>
+              ) : null}
+            </Stage>
+            <LowerThird
+              key={current.id}
+              kicker={current.kicker}
+              title={current.title}
+              subtitle={current.subtitle}
+            />
+          </box>
+        </StartContext.Provider>
       </window>
     </ThemeProvider>
   );

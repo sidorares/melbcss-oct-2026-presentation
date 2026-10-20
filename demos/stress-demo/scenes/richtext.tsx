@@ -430,9 +430,9 @@ export function RichTextScene({
           plugins={plugins}
           suggestions={SUGGESTIONS}
           decorationClasses={DECORATIONS}
+          fontSize={18}
           style={{
             height,
-            fontSize: 17,
             borderWidth: 1,
             borderColor: '#1b2030',
             borderRadius: 12,
@@ -458,12 +458,12 @@ export function RichTextScene({
           <text
             style={{
               fontFamily: '$monoFamily',
-              fontSize: 12,
+              fontSize: 15,
               color: '#9aa7c4',
             }}
           >
             {/* the part of it being edited: the top, then the end */}
-            {(atEnd ? tail : head)(saved, Math.floor((height - 80) / 17.5))}
+            {(atEnd ? tail : head)(saved, Math.floor((height - 80) / 22))}
           </text>
         </box>
       </box>

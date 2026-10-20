@@ -342,13 +342,20 @@ export function MarkdownScene({
     <box style={{ flexGrow: 1, alignItems: 'center' }}>
       <box
         ref={box}
-        style={{ width: 980, height: size.height, overflow: 'scroll' }}
+        style={{
+          // a column as wide as the text is large: the size of a chat
+          // answer read from across a room
+          width: Math.min(1440, size.width - 64),
+          height: size.height,
+          overflow: 'scroll',
+        }}
       >
         <Markdown
           source={DOCUMENT.slice(0, length)}
           partial={!done}
           fences={fences}
-          style={{ padding: 28, fontSize: 17 }}
+          fontSize={21}
+          style={{ padding: 28 }}
         />
       </box>
     </box>

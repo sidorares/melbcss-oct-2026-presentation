@@ -228,7 +228,8 @@ export function CodeScene({ active, start }: SceneProps): ReactElement {
       activeLine
       style={{
         flexGrow: 1,
-        fontSize: 13,
+        // a quarter over the editor's 13, as the rich text editor is
+        fontSize: 16,
         backgroundColor: '#0b0e16',
         color: '#c8d3f5',
         borderWidth: 0,

@@ -17,14 +17,20 @@
 // and the arrow in the header, and does no work of its own.
 import { useMemo, useRef, useState } from 'react';
 import type { ReactElement, RefObject } from 'react';
+import { Icon } from 'react-x11';
 
 import { Table } from '@react-x11/components/table';
-import type { TableColumn, TableHandle } from '@react-x11/components/table';
+import type {
+  TableColumn,
+  TableHandle,
+  TableHeaderCellState,
+} from '@react-x11/components/table';
 import { glide, progress, rng, useTick } from '../clock.js';
 import { Prepared } from '../idle.js';
 import type { SceneProps } from '../scene.js';
 import { findScroller } from '../scroll.js';
 import type { Scroller } from '../scroll.js';
+import { INK, MUTED } from '../shell.js';
 
 export interface LogRow {
   id: number;
@@ -107,14 +113,43 @@ export const tableBySlowest = new Prepared<LogRow[]>('table sort', function* (
 
 const fmt = new Intl.NumberFormat('en');
 
+/** A quarter over the table's own 12px, and over the 14 a plain cell
+ *  inherits — as the rich text editor is: this is read across a room. */
+const TEXT = 15;
+const MESSAGE_TEXT = 18;
+
+/** A column's header at that size. The table draws its own caption at 12
+ *  and has no slot for its size, so the header is the column's — and with
+ *  it the sort mark, which a header of one's own has to draw. */
+const headed =
+  (label: string) =>
+  ({ column, sort }: TableHeaderCellState<LogRow>): ReactElement => (
+    <box style={{ flexGrow: 1, flexDirection: 'row', alignItems: 'center' }}>
+      <text style={{ fontSize: TEXT, color: INK, textWrap: 'nowrap' }}>
+        {label}
+      </text>
+      <box style={{ flexGrow: 1 }} />
+      {sort?.column === column.id ? (
+        <Icon
+          name={sort.direction === 'asc' ? 'chevronUp' : 'chevronDown'}
+          size={12}
+          color={MUTED}
+        />
+      ) : null}
+    </box>
+  );
+
 export const COLUMNS: TableColumn<LogRow>[] = [
   {
     id: 'id',
     label: '#',
-    width: 96,
+    renderHeader: headed('#'),
+    width: 120,
     align: 'end',
     render: (r, s) => (
-      <text style={{ color: s.color, fontFamily: '$monoFamily', fontSize: 12 }}>
+      <text
+        style={{ color: s.color, fontFamily: '$monoFamily', fontSize: TEXT }}
+      >
         {fmt.format(r.id)}
       </text>
     ),
@@ -122,18 +157,19 @@ export const COLUMNS: TableColumn<LogRow>[] = [
   {
     id: 'level',
     label: 'Level',
-    width: 78,
+    renderHeader: headed('Level'),
+    width: 98,
     render: (r) => (
       <box style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
         <box
           style={{
-            width: 8,
-            height: 8,
-            borderRadius: 4,
+            width: 10,
+            height: 10,
+            borderRadius: 5,
             backgroundColor: LEVEL_COLOUR[r.level],
           }}
         />
-        <text style={{ fontSize: 12, color: LEVEL_COLOUR[r.level] }}>
+        <text style={{ fontSize: TEXT, color: LEVEL_COLOUR[r.level] }}>
           {LEVELS[r.level]}
         </text>
       </box>
@@ -142,21 +178,31 @@ export const COLUMNS: TableColumn<LogRow>[] = [
   {
     id: 'source',
     label: 'Source',
-    width: 110,
+    renderHeader: headed('Source'),
+    width: 138,
     value: (r) => SOURCES[r.source],
+    render: (r, s) => (
+      <text style={{ color: s.color, fontSize: TEXT }}>
+        {SOURCES[r.source]}
+      </text>
+    ),
   },
   {
     id: 'message',
     label: 'Message — wraps, so rows are not one height',
+    renderHeader: headed('Message — wraps, so rows are not one height'),
     // the rung the height index exists for
     render: (r, s) => (
-      <text style={{ color: s.color }}>{MESSAGES[r.message]}</text>
+      <text style={{ color: s.color, fontSize: MESSAGE_TEXT }}>
+        {MESSAGES[r.message]}
+      </text>
     ),
   },
   {
     id: 'ms',
     label: 'Latency',
-    width: 190,
+    renderHeader: headed('Latency'),
+    width: 232,
     align: 'end',
     render: (r, s) => (
       <box style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -176,8 +222,8 @@ export const COLUMNS: TableColumn<LogRow>[] = [
           style={{
             color: s.color,
             fontFamily: '$monoFamily',
-            fontSize: 12,
-            width: 54,
+            fontSize: TEXT,
+            width: 70,
             textAlign: 'right',
           }}
         >
@@ -317,13 +363,15 @@ function LogTable({
       columns={COLUMNS}
       presorted
       sort={sort}
-      estimatedRowHeight={30}
+      estimatedRowHeight={38}
       // The fast-scroll pill is left out: while it is up it stands over
       // the pane, and a pane with something painted over it cannot scroll
       // by copying — every frame after a jump repainted the whole table,
       // 9-14 ms a frame where the copy is 3.5.
       renderScrollHint={() => null}
       styles={{
+        // room for the larger caption: the table's own header is 24 high
+        header: { height: 32 },
         row: (s) =>
           !s.selected && s.index % 2 === 1 && { backgroundColor: '#0c0f17' },
       }}
